@@ -6,13 +6,15 @@ import PackageDescription
 let package = Package(
     name: "pajamas",
 	products: [
-		.executable(name: "pajamas", targets: ["Pajamas"])
+		.executable(name: "pajamas", targets: ["PajamasCLI"]),
+		.library(name: "pajamas-core", targets: ["PajamasCore"])
 	],
     dependencies: [
 		.package(url: "https://github.com/kareman/SwiftShell", from: "4.0.0"),
 		.package(url: "https://github.com/nvzqz/FileKit", from: "5.1.0"),
-		.package(url: "https://github.com/IgorMuzyka/Cncurses", .branch("master")),
 		.package(url: "https://github.com/IgorMuzyka/FileKit-RestorablePersistable", .branch("master")),
+
+		.package(url: "https://github.com/IgorMuzyka/Cncurses", .branch("master")),
 		.package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
 		.package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
 
@@ -20,26 +22,34 @@ let package = Package(
 		.package(url: "https://github.com/Quick/Nimble", from: "7.1.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-        .target(
-            name: "Pajamas",
-            dependencies: [
-				"SwiftShell",
+		.target(
+			name: "PajamasCore",
+			dependencies: [
 				"FileKit",
 				"RestorablePersistable",
-				"Cncurses",
+			],
+			path: "Sources/Core"
+		),
+        .target(
+            name: "PajamasCLI",
+            dependencies: [
+				"PajamasCore",
 				"Commander",
-				"Rainbow"
-			]),
+				"Rainbow",
+				"SwiftShell",
+				"Cncurses",
+			],
+			path: "Sources/CLI"
+		),
         .testTarget(
             name: "PajamasTests",
             dependencies: [
-				"Pajamas",
+				"PajamasCLI",
 				"Quick",
 				"Nimble",
 				"SwiftShell",
 				"FileKit",
-			]),
+			]
+		),
     ]
 )

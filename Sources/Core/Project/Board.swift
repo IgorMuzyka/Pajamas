@@ -1,5 +1,5 @@
 
-public struct Board: Codable {
+public struct Board: Codable, Equatable, Hashable {
 
 	public let name: String
 	public let tables: [Table]

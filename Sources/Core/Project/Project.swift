@@ -2,7 +2,7 @@
 import FileKit
 import RestorablePersistable
 
-public struct Project: Codable {
+public struct Project: Codable, Equatable, Hashable {
 
 	public let name: String
 	public let boards: [Board]
@@ -26,7 +26,7 @@ extension Project {
 extension Project: RestorablePersistable {
 
 	public static var fileExtension: String = ".pj"
-	public var fileName: String { return ".project" }
+	public var fileName: String { return "project" }
 }
 
 extension Project {

@@ -1,6 +1,6 @@
 
 import Commander
-import FileKit
+import PajamasCore
 
 extension Commands {
 
