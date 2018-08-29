@@ -34,6 +34,10 @@ extension Project {
 	public static var path: Path {
 		return .current + ".pajamas"
 	}
+
+	public static func current() throws -> Project {
+		return try restore(from: path)
+	}
 }
 
 extension Project {
@@ -47,6 +51,7 @@ extension Project {
 
 		try Project.path.createDirectory()
 		try Issue.path.createDirectory()
+		try Contributor.path.createDirectory()
 		try persist(to: Project.path)
 	}
 }

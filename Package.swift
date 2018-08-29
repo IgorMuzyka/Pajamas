@@ -13,6 +13,9 @@ let package = Package(
 		.package(url: "https://github.com/kareman/SwiftShell", from: "4.0.0"),
 		.package(url: "https://github.com/nvzqz/FileKit", from: "5.1.0"),
 		.package(url: "https://github.com/IgorMuzyka/FileKit-RestorablePersistable", .branch("master")),
+		// .package(url: "https://github.com/AndrewSB/SwiftGit2", .branch("master")),
+		// .package(url: "https://github.com/ben-ole/CLibgit2Swift.git", from: "0.0.0"),
+		.package(url: "https://github.com/IgorMuzyka/CLibgit", .branch("master")),
 
 		.package(url: "https://github.com/IgorMuzyka/Cncurses", .branch("master")),
 		.package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
@@ -20,6 +23,7 @@ let package = Package(
 
 		.package(url: "https://github.com/Quick/Quick", from: "1.3.0"),
 		.package(url: "https://github.com/Quick/Nimble", from: "7.1.0"),
+
     ],
     targets: [
 		.target(
@@ -27,6 +31,9 @@ let package = Package(
 			dependencies: [
 				"FileKit",
 				"RestorablePersistable",
+				// "SwiftGit",
+				// "libgit2",
+				"Clibgit"
 			],
 			path: "Sources/Core"
 		),

@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Clibgit",
+        "repositoryURL": "https://github.com/IgorMuzyka/CLibgit",
+        "state": {
+          "branch": "master",
+          "revision": "a8135b958431d4f3d0d39cb8a01baf5d27f65fa4",
+          "version": null
+        }
+      },
+      {
         "package": "Cncurses",
         "repositoryURL": "https://github.com/IgorMuzyka/Cncurses",
         "state": {

@@ -1,6 +1,7 @@
 
 import Commander
 import PajamasCore
+
 extension Commands {
 
 	public static var createIssue: CommandType {
