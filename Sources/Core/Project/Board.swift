@@ -7,5 +7,24 @@ public struct Board: Codable, Equatable, Hashable {
 
 extension Board {
 
-	public static var service: Board { return Board(name: "Service", tables: [.backlog, .archive]) }
+	public static var `default`: Board {
+		return Board(
+			name: "Default",
+			tables: [
+				.backlog,
+				.todo,
+				.inProgress,
+				.toTest,
+				.done,
+				.archive,
+			]
+		)
+	}
+}
+
+extension Board {
+
+	public func has(_ table: Table) -> Bool {
+		return tables.contains(table)
+	}
 }

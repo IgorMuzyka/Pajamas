@@ -2,6 +2,7 @@
 import Commander
 import SwiftShell
 import PajamasCore
+import Rainbow
 
 extension Commands {
 
@@ -12,12 +13,11 @@ extension Commands {
 		) { name, email in
 			do {
 				let contributor = Contributor(name: name, email: email)
-				try contributor.persist(to: Contributor.path)
-				print("Added contributor: \(contributor)")
+				try contributor.save()
+				print("Added contributor: \(contributor)".green)
 			} catch {
 				print(error.colorized)
 			}
-
 		}
 	}
 }

@@ -4,20 +4,41 @@ import Nimble
 import SwiftShell
 import FileKit
 
+@testable import PajamasCore
+
 class PajamasTests: QuickSpec {
 
-	override func spec() {
-		let path = SwiftShell.main.currentdirectory
-		let binary = path + ((path.contains("DerivedData")) ? "/PajamasCLI" : "/pajamas")
+	private var path: String {
+		return SwiftShell.main.currentdirectory
+	}
 
-		func cleanup() {
-			SwiftShell.run(bash: "rm -rf \(path)/.pajamas")
-			SwiftShell.run(bash: "rm -rf ./.pajamas")
+	override func spec() {
+		let binary = path + ((path.contains("DerivedData")) ? "/PajamasCLI" : "/pajamas")
+		let temp = Path("/tmp/pajamas.test/")
+
+
+		func setup() {
+			if temp.exists {
+				try! temp.deleteFile()
+			}
+
+			try! temp.createDirectory()
+
+			print(temp.description)
+
+			SwiftShell.main.currentdirectory = temp.description
 		}
 
-		describe("Main Spec") {
+		func cleanup() {
+			try! temp.deleteFile()
+		}
+
+		print(path)
+		print(Issue.path.children().map { $0.fileName }.joined(separator: ","))
+
+		describe("CLI Spec") {
 			beforeSuite {
-				cleanup()
+				setup()
 			}
 
 			afterSuite {
@@ -38,7 +59,7 @@ class PajamasTests: QuickSpec {
 				}
 
 				it("should be created on disk") {
-					let pajamasPath = Path(path) + ".pajamas"
+					let pajamasPath = Path(self.path) + ".pajamas"
 
 					expect(pajamasPath.isDirectory).to(equal(true))
 					expect(pajamasPath.exists).to(equal(true))
@@ -51,11 +72,11 @@ class PajamasTests: QuickSpec {
 
 				it("should be created") {
 					expect(SwiftShell.run(bash: "\(binary) issue create \"\(description)\"").stdout)
-						.to(equal("Created issue \(index): \(description)"))
+						.to(equal("Created issue \(index): \(description) Table(name: \"Backlog\")"))
 				}
 
 				it("should be created on disk") {
-					expect(Path(path + ".pajamas/issues/1.issue").exists).to(equal(true))
+					expect(Path(self.path + ".pajamas/issues/1.issue").exists).to(equal(true))
 				}
 			}
 
@@ -66,10 +87,23 @@ class PajamasTests: QuickSpec {
 				}
 
 				it("should be created on disk") {
-					expect(Path(path + ".pajamas/contributors/lol@kek.cheburek.Lol.contributor").exists).to(equal(true))
+					expect(Path(self.path + ".pajamas/contributors/lol@kek.cheburek.Lol.contributor").exists).to(equal(true))
 				}
 			}
 
+			context("Assigning Issue") {
+				it("issue should be assigned to provided contributor") {
+					expect(SwiftShell.run(bash: "\(binary) issue assign 1 --to Lol").stdout)
+						.to(equal("Assigned contributor: Contributor(name: \"Lol\", email: \"lol@kek.cheburek\") to issue: 1, Test Issue"))
+				}
+
+				it("issue should be assigned to current git user") {
+					let contributor = Contributor.current
+
+					expect(SwiftShell.run(bash: "\(binary) issue assign 1").stdout)
+						.to(equal("Assigned contributor: Contributor(name: \"\(contributor.name)\", email: \"\(contributor.email)\") to issue: 1, Test Issue"))
+				}
+			}
 		}
 	}
 }

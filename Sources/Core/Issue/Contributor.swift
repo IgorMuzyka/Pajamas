@@ -20,17 +20,27 @@ extension Contributor: RestorablePersistable {
 	public var fileName: String { return email + "." + name }
 }
 
-extension Contributor {
+extension Contributor: Saveable {
 
 	public static var path: Path { return Project.path + "contributors" }
 }
 
 extension Contributor {
 
-	public var current: Contributor {
+	public static var current: Contributor {
 		return Contributor(
 			name: run(bash: "git config user.name").stdout,
 			email: run(bash: "git config user.email").stdout
 		)
+	}
+}
+
+extension Contributor {
+
+	public static func find(by nameOrEmail: String) throws -> Contributor? {
+		guard let contributorPath = path.children().first(where: { $0.fileName.contains(nameOrEmail) }) else {
+			return nil
+		}
+		return try Contributor.restore(from: contributorPath)
 	}
 }

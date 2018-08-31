@@ -29,6 +29,10 @@ extension Table: ExpressibleByStringLiteral {
 
 extension Table {
 
-	public static var archive: Table { return "Archive" }
 	public static var backlog: Table { return "Backlog" }
+	public static var todo: Table { return "Todo" }
+	public static var inProgress: Table { return "In Progress" }
+	public static var toTest: Table { return "To Test" }
+	public static var done: Table { return "Done" }
+	public static var archive: Table { return "Archive" }
 }

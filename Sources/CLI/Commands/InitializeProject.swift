@@ -1,6 +1,7 @@
 
 import Commander
 import PajamasCore
+import Rainbow
 
 extension Commands {
 
@@ -10,7 +11,7 @@ extension Commands {
 		) { name in
 			do {
 				try Project.default(name: name).initialize()
-				print("Good luck with your new project: \(name)")
+				print("Good luck with your new project: \(name)".green)
 			} catch {
 				print(error.colorized)
 			}

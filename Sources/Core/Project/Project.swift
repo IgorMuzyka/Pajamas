@@ -5,21 +5,13 @@ import RestorablePersistable
 public struct Project: Codable, Equatable, Hashable {
 
 	public let name: String
-	public let boards: [Board]
+	public let board: Board
 }
 
 extension Project {
 
 	public static func `default`(name: String) -> Project {
-		return Project(name: name, boards: [
-			.service,
-			Board(name: "Default", tables: [
-				"Todo",
-				"In Progress",
-				"To Test",
-				"Done"
-			])
-		])
+		return Project(name: name, board: .default)
 	}
 }
 
@@ -29,14 +21,17 @@ extension Project: RestorablePersistable {
 	public var fileName: String { return "project" }
 }
 
-extension Project {
+extension Project: Saveable {
 
 	public static var path: Path {
 		return .current + ".pajamas"
 	}
+}
+
+extension Project {
 
 	public static func current() throws -> Project {
-		return try restore(from: path)
+		return try restore(from: path + "project\(Project.fileExtension)") 
 	}
 }
 
@@ -52,6 +47,7 @@ extension Project {
 		try Project.path.createDirectory()
 		try Issue.path.createDirectory()
 		try Contributor.path.createDirectory()
-		try persist(to: Project.path)
+		try Contributor.current.save()
+		try save()
 	}
 }
