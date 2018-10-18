@@ -11,8 +11,9 @@ matrix:
       sudo: required
 
 install:
-  - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
-
+  - if [ $TRAVIS_OS_NAME = linux ]; then
+    eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
+  fi
 script:
   - swift build
   - swift test
