@@ -56,7 +56,8 @@ let package = Package(
 				"Nimble",
 				"SwiftShell",
 				"FileKit",
-			]
+			],
+			path: "Tests"
 		),
     ]
 )
