@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/nvzqz/FileKit",
         "state": {
           "branch": null,
-          "revision": "7521741d10b9e4c9b3eb1501191652f821eb3142",
-          "version": "5.1.0"
+          "revision": "cb1a5285ca780d66264a3e70862f9845ff1cfb18",
+          "version": "5.2.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/Quick/Nimble",
         "state": {
           "branch": null,
-          "revision": "9c1379fdcd58c4f2278aea5e029394ba9a2b8f07",
-          "version": "7.1.3"
+          "revision": "cd6dfb86f496fcd96ce0bc6da962cd936bf41903",
+          "version": "7.3.1"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/Quick/Quick",
         "state": {
           "branch": null,
-          "revision": "b060679e70d13c3c7dcd124201b5b1b34ce6f340",
-          "version": "1.3.1"
+          "revision": "5fbf13871d185526993130c3a1fad0b70bfe37ce",
+          "version": "1.3.2"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/kylef/Spectre.git",
         "state": {
           "branch": null,
-          "revision": "e34d5687e1e9d865e3527dd58bc2f7464ef6d936",
-          "version": "0.8.0"
+          "revision": "f14ff47f45642aa5703900980b014c2e9394b6e5",
+          "version": "0.9.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/kareman/SwiftShell",
         "state": {
           "branch": null,
-          "revision": "02c8ae6a5d829d28aaa9683129fc71f899beca3a",
-          "version": "4.1.1"
+          "revision": "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
+          "version": "4.1.2"
         }
       }
     ]
