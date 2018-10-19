@@ -1,6 +1,4 @@
 
-import Foundation
-
 public struct Table: Codable, Equatable, Hashable {
 
 	public let name: String

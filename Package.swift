@@ -23,6 +23,7 @@ let package = Package(
 
 		.package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
 		.package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
+		.package(url: "https://github.com/JohnSundell/Files", from: "2.2.1"),
 
     ],
     targets: [
@@ -31,12 +32,13 @@ let package = Package(
 			dependencies: [
 				"FileKit",
 				"RestorablePersistable",
+                "Files",
 				// "SwiftGit",
 				// "libgit2",
 				"Clibgit"
 			],
 			path: "Sources/Core"
-		),
+		),k
         .target(
             name: "PajamasCLI",
             dependencies: [
@@ -56,6 +58,7 @@ let package = Package(
 				"Nimble",
 				"SwiftShell",
 				"FileKit",
+                "Files",
 			],
 			path: "Tests"
 		),
