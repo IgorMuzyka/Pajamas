@@ -9,7 +9,7 @@ import XCTest
 #if !os(macOS)
 public func allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(PajamasTests.__allTests),
+        testCase(PajamasTests.allTests),
     ]
 }
 #endif
