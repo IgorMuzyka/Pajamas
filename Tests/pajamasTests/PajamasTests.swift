@@ -49,7 +49,7 @@ class PajamasTests: QuickSpec {
             context("If Project was already initalized") {
                 it("should fail initialization") {
                     expect(SwiftShell.run(bash: "\(binary) init Pajamas").stdout)
-                        .to(equal("Project Already Initialized"))
+                        .to(equal("The operation couldn’t be completed. (PajamasCore.Project.InitializationError error 0.)"))
                 }
 
                 it("should be created on disk") {
