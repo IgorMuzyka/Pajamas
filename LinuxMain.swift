@@ -3,5 +3,5 @@ import XCTest
 import PajamasTests
 
 var tests = [XCTestCaseEntry]()
-tests += pajamasTests.allTests()
+tests += PajamasTests.allTests()
 XCTMain(tests)
