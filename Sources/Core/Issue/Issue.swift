@@ -1,6 +1,6 @@
 
-import FileKit
-import RestorablePersistable
+import Files
+import Foundation
 
 public struct Issue: Codable {
 
@@ -46,7 +46,7 @@ extension Issue {
 
 extension Issue: Saveable {
 
-	public static var path: Path { return Project.path + "issues" }
+	public static var path: String { return Project.path + "/issues" }
 }
 
 extension Issue: RestorablePersistable {
@@ -69,21 +69,18 @@ extension Issue: Comparable {
 extension Issue {
 
 	public static func find(by identifier: String) throws -> Issue? {
-		guard let issuePath = path.children().first(where: { $0.fileName == (identifier + Issue.fileExtension) }) else {
-			return nil
-		}
-		return try Issue.restore(from: issuePath)
+        let file = try Folder(path: path).file(named: identifier + fileExtension)
+        return try Issue.restore(from: file)
 	}
 
 	public static func issues() throws -> [Issue] {
-		return try Issue.path.children()
-			.map(File<Issue>.init)
-			.map { try $0.restore() }
-			.sorted(by: >)
+        return try Folder(path: path)
+            .makeFileSequence()
+            .map(Issue.restore)
 	}
 
 	public static var count: UInt {
-		return (Issue.path.fileReferenceCount ?? 2) - 2
+        return UInt(Folder.current.makeFileSequence().count)
 	}
 
 	public static func newIdentifier() -> UInt {

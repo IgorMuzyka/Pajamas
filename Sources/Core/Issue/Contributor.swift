@@ -1,7 +1,6 @@
 
 import SwiftShell
-import FileKit
-import RestorablePersistable
+import Files
 
 public struct Contributor: Codable {
 
@@ -22,7 +21,7 @@ extension Contributor: RestorablePersistable {
 
 extension Contributor: Saveable {
 
-	public static var path: Path { return Project.path + "contributors" }
+	public static var path: String { return Project.path + "/contributors" }
 }
 
 extension Contributor {
@@ -38,9 +37,12 @@ extension Contributor {
 extension Contributor {
 
 	public static func find(by nameOrEmail: String) throws -> Contributor? {
-		guard let contributorPath = path.children().first(where: { $0.fileName.contains(nameOrEmail) }) else {
-			return nil
-		}
-		return try Contributor.restore(from: contributorPath)
+        guard let contributorPath = try Folder(path: path)
+            .makeFileSequence()
+            .first(where: { $0.name.contains(nameOrEmail) })
+        else {
+            return nil
+        }
+        return try Contributor.restore(from: contributorPath)
 	}
 }
