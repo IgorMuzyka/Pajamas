@@ -8,7 +8,7 @@
 - [x] Configure travis to run `swift test` on linux
 - [ ] Make this README a bit more meanigfull
 - [ ] Slides to tell about CLI development and BDD
-- [ ] Make tests pass on linux
+- [x] Make tests pass on linux
 
 
 
