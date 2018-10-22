@@ -1,6 +1,6 @@
 import XCTest
 
-import pajamasTests
+import PajamasTests
 
 var tests = [XCTestCaseEntry]()
 tests += pajamasTests.__allTests()
