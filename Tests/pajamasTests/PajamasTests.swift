@@ -12,9 +12,24 @@ class PajamasTests: QuickSpec {
 		return SwiftShell.main.currentdirectory
 	}
 
+    private var binaryName: String {
+        #if os(macOS)
+            if path.contains("DerivedData") {
+                return "PajamasCLI"
+            } else {
+                return "pajamas"
+            }
+        #else
+            return "pajamas-linux"
+        #endif
+    }
+
 	override func spec() {
-		let binary = path + ((path.contains("DerivedData")) ? "/PajamasCLI" : "/pajamas")
+		let binary = path + "/" + binaryName
 		let temp = try! Folder.temporary.createSubfolderIfNeeded(withName: "pajamas.test")
+
+        print("listing files in folder: \(path)")
+        print(try! Folder(path: path).makeFileSequence().map { $0.name })
 
 		func setup() {
             cleanup()
