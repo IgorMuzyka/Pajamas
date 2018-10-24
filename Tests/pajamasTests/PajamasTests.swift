@@ -28,9 +28,6 @@ class PajamasTests: QuickSpec {
 		let binary = path + "/" + binaryName
 		let temp = try! Folder.temporary.createSubfolderIfNeeded(withName: "pajamas.test")
 
-        print("listing files in folder: \(path)")
-        print(try! Folder(path: path).makeFileSequence().map { $0.name })
-
 		func setup() {
             cleanup()
 
