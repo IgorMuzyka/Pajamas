@@ -1,6 +1,9 @@
 
-build:
+debug:
 	swift build
+
+release:
+	swift build -c release -Xswiftc -static-stdlib
 
 run:
 	swift run
@@ -11,10 +14,8 @@ update:
 resolve:
 	swift package resolve
 
-cleanup:
+clean:
 	rm -rf .build
-
-clean: cleanup update build
 
 test:
 	swift test

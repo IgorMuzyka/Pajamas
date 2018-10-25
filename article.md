@@ -50,19 +50,19 @@ Borrowing from agile software development the "desired behavior" in this case co
 
 #### Quick & Nimble
 
-There is more than one framework but for no particular reason i settled on **Quick** which is accompanied by **Nimble**. So i'm much obliged to tell a bit about them.
+There is more than one framework but for no particular reason i settled on **Quick** which is accompanied by **Nimble**. So i'm much obliged to at least introduce them.
 
 ##### Quick
 
 > Quick is a behavior-driven development framework for Swift and Objective-C. Inspired by [RSpec](https://github.com/rspec/rspec), [Specta](https://github.com/specta/specta), and [Ginkgo](https://github.com/onsi/ginkgo).
 
-
+Quick is the one thing that will actually run your tests and which allows you to define specifications.
 
 ##### Nimble
 
+> Use Nimble to express the expected outcomes of Swift or Objective-C expressions. Inspired by [Cedar](https://github.com/pivotal/cedar).
 
-
-
+Nimble is a matcher framework for Quick which provides you with an awesome DSL for setting your expectations from low to high.
 
 #### Specification DSL
 
@@ -95,21 +95,40 @@ And if test framework logs everything in a right way, log provides understanding
 
 ### What is CLI?
 
+### Why develop CLI applications?
+
 ## Swift Package Manager
 
 ### What is SPM?
 
-### Why and how to use SPM?
+The Swift Package Manager is a tool for managing distribution of source code, aimed at making it easy to share your code and reuse others’ code. The tool directly addresses the challenges of compiling and linking Swift packages, managing dependencies, versioning, and supporting flexible distribution and collaboration models.
 
-#### Crossplatform
+Apple designed the system to make it easy to share packages on services like GitHub, but packages are also great for private personal development, sharing code within a team, or at any other granularity.
 
-### When not to use SPM?
+Note that at this time the Package Manager has no support for iOS, watchOS, or tvOS platforms.
 
-### Great profits of SPM
+The Package Manager is included in Swift 3.0 and above.
 
-#### Generating Xcode project from Swift.package
+### How to use SPM?
 
-#### Testing on linux
+
+
+### Pros
+
+- Generating Xcode project on the fly, no more conflicts in Xcode project ever.
+- Manage your dependencies by editing a single file which is Package.swift.
+- Build, run and test on linux and macOS and even in Xcode.
+- File structure is a single point of trust, rearrange your files and just generate Xcode project and it all synced up.
+- You can use system C libraries on linux/bsd/macOS from Swift by just defining a package for them in a right way.
+- Edit mode for your dependencies.
+- Define Targets, Products and their Dependencies in Package.swift.
+
+### Cons
+
+- Currently does not support building for iOS, watchOs or tvOS (this one is pretty much enough to discourage anyone not interested in Swift on the backend from using SPM).
+- Commands to use SPM is a bit verbose unlike the new iPhone names.
+
+### Testing on linux
 
 ## Goodies
 
