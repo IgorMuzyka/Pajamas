@@ -2,7 +2,6 @@
 
 [TOC]
 
-
 ## Behaviour Driven Development in Swift
 
 ### What is BDD?
@@ -91,11 +90,7 @@ And if test framework logs everything in a right way, log provides understanding
 
 ![failing.test.readability.example](images/failing.test.readability.example.png)
 
-## Command Line Interfaces in Swift
 
-### What is CLI?
-
-### Why develop CLI applications?
 
 ## Swift Package Manager
 
@@ -108,10 +103,6 @@ Apple designed the system to make it easy to share packages on services like Git
 Note that at this time the Package Manager has no support for iOS, watchOS, or tvOS platforms.
 
 The Package Manager is included in Swift 3.0 and above.
-
-### How to use SPM?
-
-
 
 ### Pros
 
@@ -127,6 +118,24 @@ The Package Manager is included in Swift 3.0 and above.
 
 - Currently does not support building for iOS, watchOs or tvOS (this one is pretty much enough to discourage anyone not interested in Swift on the backend from using SPM).
 - Commands to use SPM is a bit verbose unlike the new iPhone names.
+
+
+
+## Developing Command Line Interface application in Swift
+
+### What is CLI?
+
+Command line interface (CLI) is a text-based interface that is used to operate software and operating systems while allowing the user to respond to visual prompts by typing single commands into the interface and receiving a reply in the same way.
+
+CLI is quite different from the graphical user interface (GUI) that is presently being used in the latest operating systems.
+
+### Why develop CLI applications?
+
+
+
+
+
+
 
 ### Testing on linux
 
