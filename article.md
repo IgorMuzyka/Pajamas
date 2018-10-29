@@ -123,11 +123,214 @@ The Package Manager is included in Swift 3.0 and above.
 
 ## Developing Command Line Interface application in Swift
 
-### What is CLI?
+### One last what is: What is CLI?
 
 Command line interface (CLI) is a text-based interface that is used to operate software and operating systems while allowing the user to respond to visual prompts by typing single commands into the interface and receiving a reply in the same way.
 
 CLI is quite different from the graphical user interface (GUI) that is presently being used in the latest operating systems.
+
+### And how about we build one right now using all of the things i mentioned before
+
+Step one: Create manifest file called **Package.swift** with the help of **SPM**.
+
+```bash
+swift package init --type executable
+```
+
+Now we'll need to edit our manifest file to look something ~~more~~ exactly like this:
+
+```swift
+// swift-tools-version:4.2
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+import PackageDescription
+
+let package = Package(
+    name: "pajamas",
+	products: [
+		.executable(name: "pajamas", targets: ["PajamasCLI"]),
+		.library(name: "pajamas-core", targets: ["PajamasCore"])
+	],
+    dependencies: [
+		.package(url: "https://github.com/kareman/SwiftShell", from: "4.0.0"),
+		.package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
+		.package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
+		.package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
+		.package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
+		.package(url: "https://github.com/JohnSundell/Files", from: "2.2.1"),
+    ],
+    targets: [
+		.target(
+			name: "PajamasCore",
+			dependencies: [
+                "Files",
+            ],
+			path: "Sources/Core"
+		),
+        .target(
+            name: "PajamasCLI",
+            dependencies: [
+				"PajamasCore",
+				"Commander",
+				"Rainbow",
+				"SwiftShell",
+			],
+			path: "Sources/CLI"
+		),
+        .testTarget(
+            name: "PajamasTests",
+            dependencies: [
+				"PajamasCLI",
+				"Quick",
+				"Nimble",
+				"SwiftShell",
+                "Files",
+			],
+			path: "Tests"
+		),
+    ]
+)
+
+```
+
+Notice that we define our **Products**, **Dependencies** and **Targets** as a building blocks for our application.
+
+Products define results of your build while they must consist define targets from which to build them. 
+
+Target of the executable product must have a **main.swift** file to actually be compiled into executable. 
+
+Package **Dependencies** define dependencies of our project while each **target** defines it's own dependencies and can depend on other targets. 
+
+Also each target must specify a path where all the sources are located.
+
+//Separate  When dealing with **SPM** filesystem is a kind. (we'll see it later in step when we gonna make xcode project)
+
+Also we have a separate **target for tests**, and we don't need any products for it.
+
+
+
+Now in order to setup this project and start working on it we'll need to execute few more commands through terminal:
+
+```bash
+mkdir pajamas
+cd pajamas
+
+swift package resolve # will resolve and install dependencies
+
+mkdir -p Sources/Core
+mkdir -p Sources/CLI # we create main diretories for sources of our targets
+
+touch Sources/CLI/main.swift 
+touch Sources/Core/main.swift # we create empty files so that we can generate xcode project from something
+
+swift package generate-xcodeproj # we generate xcode project
+
+open -a Xcode . # and now we continue working with our project from Xcode
+```
+
+Now you should see the following.
+
+![generated.xcode.project.example](images/generated.xcode.project.example.png)
+
+Since i wanted to approach this BDD way lets write some tests right away.
+
+Open the pajamasTests.swift and update to look like this:
+
+```swift
+import XCTest
+import Quick
+import Nimble
+import SwiftShell
+import Files
+
+@testable import PajamasCore
+
+class PajamasTests: QuickSpec {
+
+	private var path: String { return SwiftShell.main.currentdirectory }
+    
+    private var binaryName: String {
+        #if os(macOS)
+            if path.contains("DerivedData") {
+                return "PajamasCLI"
+            } else {
+                return "pajamas"
+            }
+        #else
+            return "pajamas-linux"
+        #endif
+    }
+    
+    override func spec() {
+        let binary = path + "/" + binaryName
+        let temp = try! Folder.temporary.createSubfolderIfNeeded(withName: "pajamas.test")
+        
+        func setup() {
+            cleanup()
+            try! Folder.temporary.createSubfolderIfNeeded(withName: "pajamas.test")
+			SwiftShell.main.currentdirectory = temp.path
+        }
+        
+        func cleanup() {
+            if Folder.temporary.containsSubfolder(named: "pajamas.test") {
+                try! temp.delete()
+            }
+        }
+        
+        describe("CLI Spec") {
+            beforeSuite(setup)
+            afterSuite(cleanup)
+            
+            // here we will describe our tests
+        }
+    }
+}
+```
+
+Also we'll need to setup symlinks to our binary for use from terminal on macOS and linux. Well do it like this:
+
+```bash
+swift build # build our project so that binary exists
+ln -s .build/x86_64-apple-macosx10.10/debug/pajamas pajamas # create a symlink to binary for mac os
+mkdir -p .build/x86_64-unknown-linux/debug/ # create build directory which would appear on linux
+cp ./pajamas .build/x86_64-unknown-linux/debug/ # copy pajamas to linux debug build directory
+ln -s .build/x86_64-unknown-linux/debug/pajamas pajamas-linux # create a symlink to binary for linux
+```
+
+That's pretty much everything we need to test our code from Xcode or using `swift test` from terminal on both macOS and linux.
+
+And now is a time to write our first test case.
+
+```swift
+context("If Project was not previously created") {
+    it("should initialize successfully") {
+        expect(SwiftShell.run(bash: "\(binary) init Pajamas").stdout)
+            .to(equal("Good luck with your new project: Pajamas"))
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Why develop CLI applications?
 

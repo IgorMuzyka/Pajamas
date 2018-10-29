@@ -43,20 +43,15 @@ class PajamasTests: QuickSpec {
 		}
 
 		describe("CLI Spec") {
-			beforeSuite {
-				setup()
-			}
+            beforeSuite(setup)
+			afterSuite(cleanup)
 
-			afterSuite {
-				cleanup()
-			}
-
-			context("If Project was not previously created") {
-				it("should initialize successfully") {
-					expect(SwiftShell.run(bash: "\(binary) init Pajamas").stdout)
-						.to(equal("Good luck with your new project: Pajamas"))
-				}
-			}
+            context("If Project was not previously created") {
+                it("should initialize successfully") {
+                    expect(SwiftShell.run(bash: "\(binary) init Pajamas").stdout)
+                        .to(equal("Good luck with your new project: Pajamas"))
+                }
+            }
 
             context("If Project was already initalized") {
                 it("should fail initialization") {
