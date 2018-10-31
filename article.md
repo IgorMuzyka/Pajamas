@@ -2,7 +2,7 @@
 
 [TOC]
 
-## Behaviour Driven Development in Swift
+## Behavior Driven Development in Swift
 
 ### What is BDD?
 
@@ -28,7 +28,7 @@ Yet even better if we do development TDD style why not go one step further and t
 
 ##### Story vs. Specification
 
-The big difference between TDD and BDD is that while applying BDD you write test to the specifiation and test describes behaviour rather than unit of implementation, so it's simpler to comprehend for humans. 
+The big difference between TDD and BDD is that while applying BDD you write test to the specification and test describes behavior rather than unit of implementation, so it's simpler to comprehend for humans. 
 
 ### How to approach it?
 
@@ -116,7 +116,7 @@ The Package Manager is included in Swift 3.0 and above.
 
 ### Cons
 
-- Currently does not support building for iOS, watchOs or tvOS (this one is pretty much enough to discourage anyone not interested in Swift on the backend from using SPM).
+- Currently does not support building for iOS, watchOS or tvOS (this one is pretty much enough to discourage anyone not interested in Swift on the backend from using SPM).
 - Commands to use SPM is a bit verbose unlike the new iPhone names.
 
 
@@ -195,7 +195,7 @@ let package = Package(
 
 Notice that we define our **Products**, **Dependencies** and **Targets** as a building blocks for our application.
 
-Products define results of your build while they must consist define targets from which to build them. 
+Products define results of your build while they must define targets from which to build them. 
 
 Target of the executable product must have a **main.swift** file to actually be compiled into executable. 
 
@@ -207,13 +207,11 @@ Also each target must specify a path where all the sources are located.
 
 Also we have a separate **target for tests**, and we don't need any products for it.
 
-
-
 Now in order to setup this project and start working on it we'll need to execute few more commands through terminal:
 
 ```bash
-mkdir pajamas
-cd pajamas
+mkdir Pajamas
+cd Pajamas
 
 swift package resolve # will resolve and install dependencies
 
@@ -310,6 +308,113 @@ context("If Project was not previously created") {
 }
 ```
 
+Now to check that our test fails we can trigger tests from Xcode via ⌘+U shortcut.
+
+Before we can write any code lets configure Travis-CI to test and build swift code on linux and macOS.
+
+Here's how your `.travis.yml` should look like:
+
+```yaml
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      language: generic
+    - os: osx
+      osx_image: xcode10
+      language: generic
+      sudo: required
+
+install:
+  - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)";
+
+script:
+  - swift build
+  - swift test
+```
+
+Notice this line `  eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"` it install `swiftenv`  and then right after it installs `swift`. In order for this to work we'll need one more file `.swift-version`:
+
+```
+4.2
+```
+
+Yeah, literally the version of swift that we need to run our code.
+
+Also for tests to work on linux we need to have `LinuxMain.swift` in our root directory and `XCTestManifest.swift` in our `Tests` director.
+
+`LinuxMain.swift`:
+
+```swift
+import XCTest
+import PajamasTests
+
+var tests = [XCTestCaseEntry]()
+tests += PajamasTests.allTests()
+XCTMain(tests)
+```
+
+`XCTestManifest.swift`:
+
+```swift
+import XCTest
+
+#if !os(macOS)
+public func allTests() -> [XCTestCaseEntry] {
+    return [
+        testCase(PajamasTests.allTests),
+    ]
+}
+#endif
+```
+
+Now we are good to go setup travis for our repo and can build and test on both macOS and linux from Travis-CI. (I skipped the part with other parts of configuring Travis-CI as they are pretty trivial and you would do just fine figuring out them yourself so that you'll remember how to do it next time)
+
+In order to keep on going we'll need to satisfy the test we defined previously.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -345,6 +450,36 @@ context("If Project was not previously created") {
 ## Goodies
 
 ### Makefile
+
+```
+debug:
+	swift build
+
+release:
+	swift build -c release -Xswiftc -static-stdlib
+
+run:
+	swift run
+
+update:
+	swift package update
+
+resolve:
+	swift package resolve
+
+clean:
+	rm -rf .build
+
+test:
+	swift test
+
+xcode:
+	swift package generate-xcodeproj
+
+edit:
+	vim Package.swift
+
+```
 
 
 
